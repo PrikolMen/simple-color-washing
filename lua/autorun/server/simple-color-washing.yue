@@ -1,0 +1,20 @@
+:GetColor, :SetColor, :RemoveAllDecals, :GetRenderFX = FindMetaTable( "Entity" )
+rgba = { "r", "g", "b", "a" }
+
+hook.Add "OnEntityWaterLevelChanged", "Simple Color Washing", ( entity, _, newWaterLevel ) ->
+    if newWaterLevel > 1
+        RemoveAllDecals( entity )
+
+    if GetRenderFX( entity ) ~= 0
+        return
+
+    color = GetColor( entity )
+
+    for index = 1, 4
+        if color[ rgba[ index ] ] < 250
+            color[ rgba[ index ] ] = color[ rgba[ index ] ] + 25
+        else
+            color[ rgba[ index ] ] = 255
+
+    SetColor( entity, color )
+    return
